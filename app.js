@@ -2,13 +2,34 @@ const arrayWords = ['QUESO', 'KOALA', 'PLUMA', 'POLLO', 'ACTOS', 'APILO', 'BROMA
 
 const indexRandomWord = Math.floor(Math.random() * arrayWords.length);
 const chooseWord = arrayWords[indexRandomWord];
+//const chooseWord = 'POLLO';
 console.log(chooseWord);
 
 let countLetters = 0;
 let selectedRow = 1;
 
+//This object stores the number of characters of the word to be found
+let objectChar = {};
+
+/*The function counts how many times a letter apperars in the word and store it in the object
+with its key which will be the letter and the value corresponding to the number of times it appears */
+const countWordsArray = () => {
+    objectChar = {};
+    let arrayWords = chooseWord.split('');
+    console.log(arrayWords);
+    for(let i = 0; i < arrayWords.length; i++){
+        let counter = 0;
+        for(let j = 0; j < arrayWords.length; j++){
+            if(arrayWords[i] == arrayWords[j]){
+                counter++;
+            }
+        }
+        objectChar.hasOwnProperty(`${arrayWords[i]}`) ? '' : objectChar[`${arrayWords[i]}`] = counter;
+    }
+    console.log(objectChar);
+}
+
 window.addEventListener("keydown", (event) => {
-    /* console.log(event.key); */
     if(countLetters < 5 && event.keyCode >= 65 && event.keyCode <= 90 &&  selectedRow < 7){
         countLetters += 1;
         let element = document.getElementById(`word${countLetters}`);
@@ -23,7 +44,6 @@ window.addEventListener("keydown", (event) => {
 
     if(event.key == 'Enter' && selectedRow < 6){
         const [counter, word] = isWord(selectedRow);
-        /* console.log(counter, word); */
         if(counter && arrayWords.indexOf(word) != -1){
             countLetters = 0;
             let nextRow = selectedRow + 1;
@@ -35,7 +55,6 @@ window.addEventListener("keydown", (event) => {
             }
             isWordToSearch(word);
             selectedRow += 1;
-            /* console.log(selectedRow); */
         }else if(arrayWords.indexOf(word) == -1 && counter){
             alert('La palabra no esta en la lista');
         }else{
@@ -72,8 +91,7 @@ const isWord = (selectedRow) => {
 
 //This function changes the color of the container to show whether it is close to hitting the word.
 const isWordToSearch = (word) => {
-    //console.log(word);
-    // console.log(arrayWords[indexRandomWord] == word);
+    countWordsArray()
     if(chooseWord == word){
         for(let i = 0; i < 5; i++){
             let div = document.getElementById(`row${selectedRow}`).children[i];
@@ -82,15 +100,17 @@ const isWordToSearch = (word) => {
         selectedRow = 7;
     }else{
         for(let i = 0; i < 5; i++){
-            let div = document.getElementById(`row${selectedRow}`).children[i];
-            if(chooseWord[i] == word[i]){
+            if(chooseWord[i] == word[i] && objectChar[`${word[i]}`] != 0){
+                let div = document.getElementById(`row${selectedRow}`).children[i];
                 div.classList.add('green');
+                objectChar[`${word[i]}`] -= 1;
+            }else if(chooseWord.indexOf(word[i]) != -1 && objectChar[`${word[i]}`] != 0){
+                let div = document.getElementById(`row${selectedRow}`).children[i];
+                div.classList.add('yellow');
+                objectChar[`${word[i]}`] -= 1;
             }else{
-                if(chooseWord.indexOf(word[i]) != -1){
-                    div.classList.add('yellow');
-                }else{
-                    div.classList.add('gray');
-                }
+                let div = document.getElementById(`row${selectedRow}`).children[i];
+                div.classList.add('gray');
             }
         }
     }
