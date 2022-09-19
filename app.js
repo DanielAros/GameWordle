@@ -2,7 +2,12 @@ const arrayWords = ['QUESO', 'KOALA', 'PLUMA', 'POLLO', 'ACTOS', 'APILO', 'BROMA
 
 const indexRandomWord = Math.floor(Math.random() * arrayWords.length);
 const chooseWord = arrayWords[indexRandomWord];
-//const chooseWord = 'POLLO';
+
+//Declare variables
+const modal = document.getElementById('winner');
+const close = document.getElementById('close');
+let isWinner = false;
+
 console.log(chooseWord);
 
 let countLetters = 0;
@@ -66,6 +71,7 @@ window.addEventListener("keydown", (event) => {
             isWordToSearch(word);
             selectedRow++;
             console.log('game over');
+            showModal();
         }else if(arrayWords.indexOf(word) != -1 && counter){
             alert('La palabra no esta en la lista');
         }else{
@@ -73,6 +79,13 @@ window.addEventListener("keydown", (event) => {
         }
     }
 });
+
+
+//If the close button is pressed, the modal is hidden
+close.addEventListener('click', () => {
+    modal.style.display = 'none';
+});
+
 
 //The function checks if the word you type is five letters long.
 const isWord = (selectedRow) => {
@@ -87,7 +100,6 @@ const isWord = (selectedRow) => {
     }
     return [counter == 5, word];
 }
-
 
 //This function changes the color of the container to show whether it is close to hitting the word.
 const isWordToSearch = (word) => {
@@ -115,3 +127,15 @@ const isWordToSearch = (word) => {
         }
     }
 }
+
+const showModal = () => { 
+    const modal = document.getElementById('winner');
+    modal.style.display = 'block';
+    selectedRow = 7;
+
+    if(!isWinner){
+        document.getElementById('title-modal').innerHTML = 'Has perdido';
+    }
+    
+}
+

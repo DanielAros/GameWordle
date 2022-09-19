@@ -55,3 +55,35 @@ section{
     background-color: #787C7E;
     color: white;
 }
+
+#winner{
+    width: 50%;
+    /* height: 50px; */
+    background-color: rebeccapurple;
+    display: none;
+    position: fixed;
+    padding: 10px 10px;
+    box-sizing: border-box;
+    color: white;
+    text-align: center;
+}
+
+#close-modal{
+    width: 100%;
+    /* background-color: red;s */
+    text-align: end;
+}
+
+#close{
+    cursor: pointer;
+}
+
+.buttons{
+    cursor: pointer;
+    padding: 2px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: none;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
