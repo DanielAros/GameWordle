@@ -1,14 +1,12 @@
 const arrayWords = ['QUESO', 'KOALA', 'PLUMA', 'POLLO', 'ACTOS', 'APILO', 'BROMA', 'CIEGO', 'CIELO', 'CIRCO', 'CARAS'];
 
-const indexRandomWord = Math.floor(Math.random() * arrayWords.length);
-const chooseWord = arrayWords[indexRandomWord];
+let indexRandomWord = Math.floor(Math.random() * arrayWords.length);
+let chooseWord = arrayWords[indexRandomWord];
+console.log(chooseWord);
 
 //Declare variables
 const modal = document.getElementById('winner');
-const close = document.getElementById('close');
 let isWinner = false;
-
-console.log(chooseWord);
 
 let countLetters = 0;
 let selectedRow = 1;
@@ -58,7 +56,10 @@ window.addEventListener("keydown", (event) => {
                 let nextDiv = document.getElementById(`row${nextRow}`).children[i];
                 nextDiv.setAttribute('id', `word${i+1}`);
             }
-            isWordToSearch(word);
+            if(isWordToSearch(word)){
+                isWinner = true;
+                showModal();
+            }
             selectedRow += 1;
         }else if(arrayWords.indexOf(word) == -1 && counter){
             alert('La palabra no esta en la lista');
@@ -79,13 +80,6 @@ window.addEventListener("keydown", (event) => {
         }
     }
 });
-
-
-//If the close button is pressed, the modal is hidden
-close.addEventListener('click', () => {
-    modal.style.display = 'none';
-});
-
 
 //The function checks if the word you type is five letters long.
 const isWord = (selectedRow) => {
@@ -110,6 +104,7 @@ const isWordToSearch = (word) => {
             div.classList.add('green');
         }
         selectedRow = 7;
+        return true;
     }else{
         for(let i = 0; i < 5; i++){
             if(chooseWord[i] == word[i] && objectChar[`${word[i]}`] != 0){
@@ -126,6 +121,8 @@ const isWordToSearch = (word) => {
             }
         }
     }
+
+    return false;
 }
 
 const showModal = () => { 
@@ -136,6 +133,40 @@ const showModal = () => {
     if(!isWinner){
         document.getElementById('title-modal').innerHTML = 'Has perdido';
     }
-    
+}
+
+const hiddeModal = () => {
+    modal.style.display = 'none';
+}
+
+//Set initial attributes and restart the game
+const reloadGame = () => { 
+    hiddeModal();
+    console.log('function reload page');
+    countLetters = 0;
+    selectedRow = 1;
+
+    for(let i = 0; i < 5; i++){
+        let currentDiv = document.getElementById(`row${selectedRow}`).children[i];
+        currentDiv.setAttribute('id', `word${i+1}`);
+        currentDiv.innerHTML = '';
+        currentDiv.removeAttribute('class');
+        currentDiv.setAttribute('class', 'columns');
+    }
+
+    for(let j = 2; j < 6; j++){
+        let nextRow = j;
+        for(let i = 0; i < 5; i++){
+            let nextDiv = document.getElementById(`row${nextRow}`).children[i];
+            nextDiv.removeAttribute('id');
+            nextDiv.innerHTML = '';
+            nextDiv.removeAttribute('class');
+            nextDiv.setAttribute('class', 'columns');
+        }   
+    }
+
+    indexRandomWord = Math.floor(Math.random() * arrayWords.length);
+    chooseWord = arrayWords[indexRandomWord];
+    console.log(chooseWord);
 }
 

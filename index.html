@@ -55,13 +55,15 @@
         </div>
         <div id="winner">
             <div id="close-modal">
-                <span id="close">X</span>
+                <span id="close" onclick="hiddeModal()">X</span>
             </div>
             <span id="title-modal">
                 Felicidades has ganado!!
+                <br>
+                Racha:
             </span>
             <div class="container-buttons">
-                <button class="buttons">Jugar de nuevo</button>
+                <button class="buttons" id="buttonReloadGame" onclick="reloadGame()">Jugar de nuevo</button>
                 <button class="buttons">Jugar de nuevo</button>
             </div>
         </div>
