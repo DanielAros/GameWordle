@@ -4,6 +4,9 @@ let indexRandomWord = Math.floor(Math.random() * arrayWords.length);
 let chooseWord = arrayWords[indexRandomWord];
 console.log(chooseWord);
 
+
+let score = 0;
+
 //Declare variables
 const modal = document.getElementById('winner');
 let isWinner = false;
@@ -58,6 +61,7 @@ window.addEventListener("keydown", (event) => {
             }
             if(isWordToSearch(word)){
                 isWinner = true;
+                score += 1;
                 showModal();
             }
             selectedRow += 1;
@@ -132,6 +136,8 @@ const showModal = () => {
 
     if(!isWinner){
         document.getElementById('title-modal').innerHTML = 'Has perdido';
+    }else{
+        document.getElementById('title-modal').innerHTML += `<br/> Racha: ${score}`;
     }
 }
 
@@ -154,7 +160,7 @@ const reloadGame = () => {
         currentDiv.setAttribute('class', 'columns');
     }
 
-    for(let j = 2; j < 6; j++){
+    for(let j = 2; j < 7; j++){
         let nextRow = j;
         for(let i = 0; i < 5; i++){
             let nextDiv = document.getElementById(`row${nextRow}`).children[i];
@@ -169,4 +175,10 @@ const reloadGame = () => {
     chooseWord = arrayWords[indexRandomWord];
     console.log(chooseWord);
 }
+
+const closeRules = () => {
+    rules = document.getElementById('rules');
+    rules.style.display = 'none';
+}
+
 
