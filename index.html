@@ -8,6 +8,17 @@
     <title>Game Wordle</title>
 </head>
 <body>
+    <header>
+        <div>
+            
+        </div>
+        <div>
+            <h1>WORDLE</h1>
+        </div>
+        <div>
+
+        </div>
+    </header>
     <section>
         <div class="table">
             <div class="rows" id="row1">
@@ -88,7 +99,9 @@
                 </div>
                 <p>La letra <b>O</b> no está en la palabra.</p>
                 <p>Puede haber letras repetidas y en este caso las pistas son independientes para cada letra y tienen prioridad.</p>
-                <button class="button-play" onclick="closeRules()">Jugar</button>
+                <div class="container-button">
+                    <button class="button-play" onclick="closeRules()">Jugar</button>
+                </div>
             </div>
         </div>
         <div id="winner">
@@ -100,7 +113,7 @@
             </span>
             <div class="container-buttons">
                 <button class="buttons" id="buttonReloadGame" onclick="reloadGame()">Jugar de nuevo</button>
-                <button class="buttons">Compartir</button>
+                <button class="buttons">Estadisticas</button>
             </div>
         </div>
     </section>
