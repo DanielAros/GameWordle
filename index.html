@@ -5,18 +5,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./style.css">
-    <title>Game Wordle</title>
+    <title>Palabra</title>
 </head>
 <body>
     <header>
-        <div>
-            
+        <div class="container-question" onclick="closeRules(false)">
+            <img src="./icons/question.png" alt="question">
         </div>
-        <div>
-            <h1>WORDLE</h1>
+        <div class="title">
+            <h1>WORD</h1>
         </div>
-        <div>
-
+        <div class="container-question" onclick="showModal()">
+            <img src="./icons/stadistics.png" alt="question">
         </div>
     </header>
     <section>
@@ -67,7 +67,7 @@
         <div id="rules">
             <div class="container-rules">
                 <div class="close-modal">
-                    <span class="close" onclick="closeRules()">X</span>
+                    <span class="close" onclick="closeRules(true)">X</span>
                 </div>
                 <h1>Cómo jugar</h1>
                 <p>Adivina la palabra oculta en seis intentos.</p>
@@ -100,7 +100,7 @@
                 <p>La letra <b>O</b> no está en la palabra.</p>
                 <p>Puede haber letras repetidas y en este caso las pistas son independientes para cada letra y tienen prioridad.</p>
                 <div class="container-button">
-                    <button class="button-play" onclick="closeRules()">Jugar</button>
+                    <button class="button-play" onclick="closeRules(true)">Jugar</button>
                 </div>
             </div>
         </div>
@@ -108,13 +108,32 @@
             <div class="close-modal">
                 <span class="close" onclick="hiddeModal()">X</span>
             </div>
-            <span id="title-modal">
-                Felicidades has ganado!!
-            </span>
-            <div class="container-buttons">
-                <button class="buttons" id="buttonReloadGame" onclick="reloadGame()">Jugar de nuevo</button>
-                <button class="buttons">Estadisticas</button>
+            <h3 id="title-modal">
+                ESTADÍSTICAS
+            </h3>
+            <div class="container-results">
+                <div class="result">
+                    <h1 id="plays">0</h1>
+                    <p>Jugadas</p>
+                </div>
+                <div class="result">
+                    <h1>0%</h1>
+                    <p id="victories">Victorias</p>
+                </div>
+                <div class="result">
+                    <h1 id="current-streak">0</h1>
+                    <p>Racha Actual</p>
+                </div>
+                <div class="result">
+                    <h1 id="best-streak">0</h1>
+                    <p>Mejor racha</p>
+                </div>
             </div>
+            <div class="container-buttons">
+                <button class="buttons" id="buttonReloadGame" onclick="reloadGame()">JUGAR DE NUEVO</button>
+                <!-- <button class="buttons">Estadisticas</button> -->
+            </div>
+            <P id="word">La palabra era:</P>
         </div>
     </section>
 </body>
