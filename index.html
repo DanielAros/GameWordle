@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./style.css">
+    <link rel="shortcut icon" href="./icons/keyboard-key.png">
     <title>Palabra</title>
 </head>
 <body>
@@ -64,9 +65,51 @@
                 <div class="columns"></div>
             </div>
         </div>
+
+        <div class="keyboard">
+            <div class="rows-keyboard" id="rowKeyboard1">
+                <div id="Q" class="key default-colorKeys" onclick="listenerKeyboard('Q')">Q</div>
+                <div id="W" class="key default-colorKeys" onclick="listenerKeyboard('W')">W</div>
+                <div id="E" class="key default-colorKeys" onclick="listenerKeyboard('E')">E</div>
+                <div id="R" class="key default-colorKeys" onclick="listenerKeyboard('R')">R</div>
+                <div id="T" class="key default-colorKeys" onclick="listenerKeyboard('T')">T</div>
+                <div id="Y" class="key default-colorKeys" onclick="listenerKeyboard('Y')">Y</div>
+                <div id="U" class="key default-colorKeys" onclick="listenerKeyboard('U')">U</div>
+                <div id="I" class="key default-colorKeys" onclick="listenerKeyboard('I')">I</div>
+                <div id="O" class="key default-colorKeys" onclick="listenerKeyboard('O')">O</div>
+                <div id="P" class="key default-colorKeys" onclick="listenerKeyboard('P')">P</div>
+            </div>
+            <div class="rows-keyboard" id="rowKeyboard2">
+                <div id="A" class="key default-colorKeys" onclick="listenerKeyboard('A')">A</div>
+                <div id="S" class="key default-colorKeys" onclick="listenerKeyboard('S')">S</div>
+                <div id="D" class="key default-colorKeys" onclick="listenerKeyboard('D')">D</div>
+                <div id="F" class="key default-colorKeys" onclick="listenerKeyboard('F')">F</div>
+                <div id="G" class="key default-colorKeys" onclick="listenerKeyboard('G')">G</div>
+                <div id="H" class="key default-colorKeys" onclick="listenerKeyboard('H')">H</div>
+                <div id="J" class="key default-colorKeys" onclick="listenerKeyboard('J')">J</div>
+                <div id="K" class="key default-colorKeys" onclick="listenerKeyboard('K')">K</div>
+                <div id="L" class="key default-colorKeys" onclick="listenerKeyboard('L')">L</div>
+                <div id="Ñ" class="key default-colorKeys" onclick="listenerKeyboard('Ñ')">Ñ</div>
+            </div>
+            <div class="rows-keyboard" id="rowKeyboard3">
+                <div class="key default-colorKeys" id="send" onclick="listenerKeyboard('Enter')">ENVIAR</div>
+                <div id="Z" class="key default-colorKeys" onclick="listenerKeyboard('Z')">Z</div>
+                <div id="X" class="key default-colorKeys" onclick="listenerKeyboard('X')">X</div>
+                <div id="C" class="key default-colorKeys" onclick="listenerKeyboard('C')">C</div>
+                <div id="V" class="key default-colorKeys" onclick="listenerKeyboard('V')">V</div>
+                <div id="B" class="key default-colorKeys" onclick="listenerKeyboard('B')">B</div>
+                <div id="N" class="key default-colorKeys" onclick="listenerKeyboard('N')">N</div>
+                <div id="M" class="key default-colorKeys" onclick="listenerKeyboard('M')">M</div>
+                <div class="key default-colorKeys" id="deleteKey" onclick="listenerKeyboard('Backspace')">
+                    <img src="./icons/delete.png" alt="delete">
+                </div>
+            </div>
+        </div>
+
+        <!-- MODALS -->
         <div id="rules">
             <div class="container-rules">
-                <div class="close-modal">
+                <div class="close-modal-rules">
                     <span class="close" onclick="closeRules(true)">X</span>
                 </div>
                 <h1>Cómo jugar</h1>
@@ -117,7 +160,7 @@
                     <p>Jugadas</p>
                 </div>
                 <div class="result">
-                    <h1>0%</h1>
+                    <h1 id="victories">0%</h1>
                     <p id="victories">Victorias</p>
                 </div>
                 <div class="result">
@@ -125,7 +168,7 @@
                     <p>Racha Actual</p>
                 </div>
                 <div class="result">
-                    <h1 id="best-streak">0</h1>
+                    <h1 id="bestStreak">0</h1>
                     <p>Mejor racha</p>
                 </div>
             </div>

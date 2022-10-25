@@ -1,4 +1,3 @@
-// const arrayWords = ['QUESO', 'KOALA', 'PLUMA', 'POLLO', 'ACTOS', 'APILO', 'BROMA', 'CIEGO', 'CIELO', 'CIRCO', 'CARAS'];
 const arrayWords = [
 'salir','tener','tocar','golpe','hacer','nuevo','deseo','apoyo','valor','poder','crear','miedo','perro','subir','orden','mucho','saber','comer','tomar','largo','pedir','sacar','poner','causa','amigo','bajar','mujer','karma','armar','parte','mundo','nivel','mejor','grupo','feliz','donde','hecho','jugar','decir','carta',
 'dulce','bella','claro','final','mayor','luego','snack','bueno','regla','lugar','etapa','sabio','antes','forma','dejar','mirar','tenaz','soñar','tarea','calma','ayuda','ahora','viaje','deber','cerca','ideal','norma','falta','dicha','lleno','hueco','tanto','campo','nunca','papel','girar','frase','suave','punto','libro',
@@ -27,11 +26,12 @@ const arrayWords = [
 
 let indexRandomWord = Math.floor(Math.random() * arrayWords.length);
 let chooseWord = arrayWords[indexRandomWord];
-console.log(chooseWord);
+// console.log(chooseWord);
 
 
 let currentStreak = 0;
 let plays = 0;
+let victories = 0;
 
 //Declare variables
 const modal = document.getElementById('winner');
@@ -48,7 +48,7 @@ with its key which will be the letter and the value corresponding to the number 
 const countWordsArray = () => {
     objectChar = {};
     let arrayWords = chooseWord.split('');
-    console.log(arrayWords);
+    // console.log(arrayWords);
     for(let i = 0; i < arrayWords.length; i++){
         let counter = 0;
         for(let j = 0; j < arrayWords.length; j++){
@@ -58,11 +58,11 @@ const countWordsArray = () => {
         }
         objectChar.hasOwnProperty(`${arrayWords[i]}`) ? '' : objectChar[`${arrayWords[i]}`] = counter;
     }
-    console.log(objectChar);
+    // console.log(objectChar);
 }
 
 window.addEventListener("keydown", (event) => {
-    if(countLetters < 5 && event.keyCode >= 65 && event.keyCode <= 90 &&  selectedRow < 7){
+    if(countLetters < 5 && ((event.keyCode >= 65 && event.keyCode <= 90) ||  event.keyCode == 192) &&  selectedRow < 7){
         countLetters += 1;
         let element = document.getElementById(`word${countLetters}`);
         element.append(event.key.toUpperCase());
@@ -75,35 +75,15 @@ window.addEventListener("keydown", (event) => {
     }
 
     if(event.key == 'Enter' && selectedRow < 6){
-        const [counter, word] = isWord(selectedRow);
-        if(counter && arrayWords.indexOf(word) != -1){
-            countLetters = 0;
-            let nextRow = selectedRow + 1;
-            for(let i = 0; i < 5; i++){
-                let currentDiv = document.getElementById(`row${selectedRow}`).children[i];
-                currentDiv.removeAttribute('id');
-                let nextDiv = document.getElementById(`row${nextRow}`).children[i];
-                nextDiv.setAttribute('id', `word${i+1}`);
-            }
-            if(isWordToSearch(word)){
-                isWinner = true;
-                currentStreak += 1;
-                plays += 1;
-                showModal();
-            }
-            selectedRow += 1;
-        }else if(arrayWords.indexOf(word) == -1 && counter){
-            alert('La palabra no esta en la lista');
-        }else{
-            alert('No hay suficientes letras');
-        }
+        checkWordCorrect();
     }else if(event.key == 'Enter' && selectedRow == 6){
         const [counter, word] = isWord(selectedRow);
         if(counter && arrayWords.indexOf(word) != -1){
             isWordToSearch(word);
             selectedRow++;
-            console.log('game over');
+            // console.log('game over');
             plays += 1;
+            victories = Math.round((currentStreak/plays)*100);
             showModal();
         }else if(arrayWords.indexOf(word) != -1 && counter){
             alert('La palabra no esta en la lista');
@@ -112,6 +92,73 @@ window.addEventListener("keydown", (event) => {
         }
     }
 });
+
+const checkWordCorrect = () => {
+    const [counter, word] = isWord(selectedRow);
+    if(counter && arrayWords.indexOf(word) != -1){
+        countLetters = 0;
+        let nextRow = selectedRow + 1;
+        for(let i = 0; i < 5; i++){
+            let currentDiv = document.getElementById(`row${selectedRow}`).children[i];
+            currentDiv.removeAttribute('id');
+            let nextDiv = document.getElementById(`row${nextRow}`).children[i];
+            nextDiv.setAttribute('id', `word${i+1}`);
+        }
+        if(isWordToSearch(word)){
+            isWinner = true;
+            currentStreak += 1;
+            plays += 1;
+            victories = Math.round((currentStreak/plays)*100);
+            const bestStreak = localStorage.getItem('bestStreak');
+            // console.log(bestStreak)
+            if(bestStreak){
+                if(currentStreak > bestStreak ){
+                    localStorage.setItem('bestStreak', currentStreak.toString());
+                }
+            }else{
+                localStorage.setItem('bestStreak', currentStreak.toString());
+            }
+            showModal();
+        }
+        selectedRow += 1;
+    }else if(arrayWords.indexOf(word) == -1 && counter){
+        alert('La palabra no esta en la lista');
+    }else{
+        alert('No hay suficientes letras');
+    }
+}
+
+const listenerKeyboard = (key) => {
+    if(countLetters < 5 &&  selectedRow < 7 && key != "Enter" && key != "Backspace"){
+        countLetters += 1;
+        let element = document.getElementById(`word${countLetters}`);
+        element.append(key.toUpperCase());
+    }
+
+    if(key == 'Backspace' && countLetters > 0 &&  selectedRow < 7){
+        let element = document.getElementById(`word${countLetters}`);
+        element.innerHTML = '';
+        countLetters -= 1;
+    }
+
+    if(key == 'Enter' && selectedRow < 6){
+        checkWordCorrect();
+    }else if(key == 'Enter' && selectedRow == 6){
+        const [counter, word] = isWord(selectedRow);
+        if(counter && arrayWords.indexOf(word) != -1){
+            isWordToSearch(word);
+            selectedRow++;
+            // console.log('game over');
+            plays += 1;
+            victories = Math.round((currentStreak/plays)*100);
+            showModal();
+        }else if(arrayWords.indexOf(word) != -1 && counter){
+            alert('La palabra no esta en la lista');
+        }else{
+            alert('No hay suficientes letras');
+        }
+    }
+}
 
 //The function checks if the word you type is five letters long.
 const isWord = (selectedRow) => {
@@ -134,6 +181,9 @@ const isWordToSearch = (word) => {
         for(let i = 0; i < 5; i++){
             let div = document.getElementById(`row${selectedRow}`).children[i];
             div.classList.add('green');
+            let divKey = document.getElementById(word[i].toUpperCase());
+            divKey.classList.remove('default-colorKeys');
+            divKey.classList.add('green');
         }
         selectedRow = 7;
         return true;
@@ -143,13 +193,27 @@ const isWordToSearch = (word) => {
                 let div = document.getElementById(`row${selectedRow}`).children[i];
                 div.classList.add('green');
                 objectChar[`${word[i]}`] -= 1;
+                
             }else if(chooseWord.indexOf(word[i]) != -1 && objectChar[`${word[i]}`] != 0){
                 let div = document.getElementById(`row${selectedRow}`).children[i];
                 div.classList.add('yellow');
                 objectChar[`${word[i]}`] -= 1;
+                
             }else{
                 let div = document.getElementById(`row${selectedRow}`).children[i];
                 div.classList.add('gray');
+                
+            }
+
+            //Color keyboard
+            let divKey = document.getElementById(word[i].toUpperCase());
+            divKey.classList.remove('default-colorKeys');
+            if(chooseWord[i] == word[i]){
+                divKey.classList.add('green');
+            }else if(chooseWord.indexOf(word[i]) != -1){
+                divKey.classList.add('yellow');
+            }else{
+                divKey.classList.add('gray');
             }
         }
     }
@@ -160,16 +224,24 @@ const isWordToSearch = (word) => {
 const showModal = () => { 
     const modal = document.getElementById('winner');
     modal.style.display = 'block';
-    selectedRow = 7;
+    
 
-    document.getElementById('word').innerHTML = `La palabra era: <b>${chooseWord.toUpperCase()}<b/>`;
+    if(selectedRow != 7){
+        document.getElementById('word').innerHTML = ``;
+    }else{
+        document.getElementById('word').innerHTML = `La palabra era: <b>${chooseWord.toUpperCase()}<b/>`;
+    }
+
+    const bestStreak = localStorage.getItem('bestStreak');
+
+    bestStreak ?
+        document.getElementById('bestStreak').innerHTML = `${bestStreak}`
+    :
+        '';
+
     document.getElementById('plays').innerHTML = `${plays}`;
+    document.getElementById('victories').innerHTML = `${victories}%`;
     document.getElementById('current-streak').innerHTML = `${currentStreak}`;
-    // if(!isWinner){
-    //     document.getElementById('word').innerHTML = `La palabra era: <b>${chooseWord}<b/>`;
-    // }else{
-    //     document.getElementById('word').innerHTML += `<br/> Racha: ${currentStreak}`;
-    // }
 }
 
 const hiddeModal = () => {
@@ -179,7 +251,6 @@ const hiddeModal = () => {
 //Set initial attributes and restart the game
 const reloadGame = () => { 
     hiddeModal();
-    console.log('function reload page');
     countLetters = 0;
     selectedRow = 1;
 
@@ -202,9 +273,19 @@ const reloadGame = () => {
         }   
     }
 
+    for(let i = 0; i < 3; i++){
+        let lengthRow = document.getElementById(`rowKeyboard${i+1}`).children.length;
+        for(let j = 0; j < lengthRow; j++){
+            let divKey = document.getElementById(`rowKeyboard${i+1}`).children[j];
+            divKey.removeAttribute('class');
+            divKey.setAttribute('class', 'key');
+            divKey.classList.add('default-colorKeys')
+        }
+    }
+
     indexRandomWord = Math.floor(Math.random() * arrayWords.length);
     chooseWord = arrayWords[indexRandomWord];
-    console.log(chooseWord);
+    // console.log(chooseWord);
 }
 
 const closeRules = (option) => {
@@ -212,7 +293,7 @@ const closeRules = (option) => {
     if(option){
         rules.style.display = 'none';
     }else{
-        rules.style.display = 'block';
+        rules.style.display = 'flex';
     }
 }
 
